@@ -1,0 +1,350 @@
+---
+title: "FA3"
+author: "Frances Aneth Rosales"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    css: FA3.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r r_1}
+
+library(ggplot2)
+library(tidyr)
+library(broom)
+library(readxl)
+
+loandata <- read_excel("C:\\Users\\asus\\Documents\\ALL FEU FILES\\FEU FOLDER 6\\LINEAR MODEL\\FA3\\Loan_Data.xlsx")
+loandata
+View(loandata)
+
+```
+
+# Loan Amount vs Total Income 
+
+In this field, we created a new column for the Total Income of applicant which includes "Applicant Income" and Coapplicant Income". 
+
+
+```{r r_2}
+
+
+loandata$Total_Income<- loandata$ApplicantIncome + loandata$CoapplicantIncome
+
+loan_vs_total_income <- lm(LoanAmount ~ Total_Income, data = loandata)
+summary(loan_vs_total_income)
+
+
+
+```
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+Using the formula above, we can have a general form <b> LoanAmount= (88.72) + Total Income (0.008186)+ ε </b>, as we compare the Loan Amount and applicant's Total Income. <br>
+Upon analyzing, the coefficient for Total_Income is (0.008186) indicates that, for a one-unit increase in applicant's Total_Income, the LoanAmount is expected to increase by 0.008186 units. <br>
+Additionally, the estimated intercept β0 =(88.72) represents the estimated LoanAmount when the Total_Income is zero. However, in reality, the concept of having zero income for applicants loaning in bank would be unrealistic since customer's income should also be the requirement for loaning. <br>
+Lastly, we can interpret the  p-value: < 2.2e-16 which is considered extremely small. Since the p-value is less than the significance levels such as 0.05, thus, shows that there is strong evidence against the null hypothesis and supports the idea that there is a significant relationship between our variables.
+
+
+<br><br><br>
+
+```{r r_3}
+
+
+loan_vs_Married <- lm(LoanAmount ~ Married, data = loandata)
+
+summary_married<- summary(loan_vs_Married)
+summary_married
+
+```
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+Using the formula above, we can have a general form <b> LoanAmount= (128.883) + Married(Yes) (26.867)+ ε </b>, as we compare the Loan Amount and applicant's status of marriage. <br>
+The estimated intercept β0 =(128.883) represents the estimated LoanAmount when the applicant is not married.<br>
+Additionally, upon analyzing, the coefficient for Married applicant is (26.867) indicates that, on average, married applicants have an expected LoanAmount approximately 26.867 units higher than unmarried applicants. <br>
+Additionally, 
+Lastly, we can interpret the  p-value: 0.0002678 which is also considered extremely small. Since the p-value is less than the significance levels such as 0.05, thus, shows that there is strong evidence against the null hypothesis between our variables again.
+
+<br><br><br>
+
+```{r r_4}
+
+
+loan_vs_Self_Employed <- lm(LoanAmount ~ Self_Employed, data = loandata)
+summary(loan_vs_Self_Employed)
+
+
+```
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+Using the formula above, we can have a general form <b> LoanAmount= (141.749) + Self-Employed(Yes) (30.251)+ ε </b>, as we compare variables Loan Amount and applicant's being Self-Employed. <br>
+Upon analyzing, the coefficient for being Self-Employed is (30.251) indicates that,self-employed applicants have an expected Loan Amount approximately 30.251 units higher than non-self-employed applicants. <br>
+Additionally, the estimated intercept β0 =(141.749) represents the estimated LoanAmount when the our independent variable Self_Employed is "No" (Self_EmployedNo). In other words, for applicants who are not self-employed, the expected LoanAmount is 141.749.<br>
+Lastly, we can interpret the  p-value: 0.00328 which less than the significance levels such as 0.05, thus, shows that there is strong evidence against the null hypothesis and supports the idea that there is a significant relationship between our variables.
+
+<br><br><br>
+
+
+```{r r_5}
+loan_vs_Gender <- lm(LoanAmount ~ Gender, data = loandata)
+summary(loan_vs_Gender)
+
+```
+
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+Using the formula above, we can have a general form <b> LoanAmount= (126.697) + Gender(Male) (22.569)+ ε </b>, as we compare the Loan Amount and applicant's Gender as Male. <br>
+The estimated intercept β0 =(126.697) represents the estimated LoanAmount when the applicant is Female.<br>
+Additionally, upon analyzing, the coefficient for Male Applicants applicant is (22.569) indicates that, male applicants have an expected Loan Amount approximately 22.569 units higher than female applicants. <br>
+Lastly, we can interpret the  p-value: 0.01002 which is also considered extremely small. Since the p-value is less than the significance levels such as 0.05, thus, shows that there is strong evidence against the null hypothesis between our variables again.
+
+<br><br><br>
+
+
+
+
+```{r r_6}
+
+loan_vs_Property_Area <- lm(LoanAmount ~ Property_Area, data = loandata)
+summary(loan_vs_Property_Area)
+
+
+
+```
+
+\[
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
+\]
+
+Using the formula above, we can have a general form <b> LoanAmount= (152.260) + Property_AreaSemiurban (-6.756)+ Property_AreaUrban(-10.061)+ε </b>, as we compare the Loan Amount and applicant's Property Area.<br>
+The estimated intercept β0 =(152.260) represents the estimated LoanAmount when the categorical variable Property_Area is "Rural". Therefore, for applicants from rural areas, the expected LoanAmount is 152.260. <br>
+Additionally, upon analyzing, the coefficient for Applicants in Semiurban Applicants indicates that the LoanAmount is expected to be lower by 6.756 units for applicants compared to Rural areas, while Urban Applicants expected to be lower by 10.061 loan amount compared to Rural areas. <br>
+Lastly, we can interpret the  p-value: 0.5238 which is unfortunalely greater than the significant value 0.05, thus an insufficient evidence to reject the null hypothesis.
+
+<br><br><br>
+
+
+# Summary
+
+Total Income (p-value: < 2.2e-16):<br>
+Extremely small p-value, indicating a strong and statistically significant relationship between Total Income and Loan Amount.<br>
+Married (p-value: 0.0002678):<br>
+Small p-value, suggesting a statistically significant relationship between the marital status (Married) and Loan Amount.<br>
+Self-Employed (p-value: 0.00328):<br>
+Small p-value, indicating a statistically significant relationship between being Self-Employed and Loan Amount.<br>
+Gender (p-value: 0.01002):<br>
+Small p-value, suggesting a statistically significant relationship between gender (Male) and Loan Amount.<br>
+Property Area (p-value: 0.5238):<br>
+Relatively large p-value, which suggests that the Property Area may not be statistically significant in predicting Loan Amount. The evidence is insufficient to reject the null hypothesis.<br>
+<br>
+Total Income, followed by Gender, Self-Employment status, and Marital Status (Married), seems to be the most significant variable in predicting Loan Amount based on the p-values. Property Area's greater p-value suggests that it is less significant.
+<br><br><br>
+
+
+
+
+```{r r_8}
+
+library(MASS)
+contingency_table_loan_vs_Total_Income <- table(loandata$LoanAmount, loandata$Total_Income)
+
+loglm_model_loan_vs_Total_Income <- loglm(Freq ~ ., data = as.data.frame(contingency_table_loan_vs_Total_Income))
+
+df_Total_Income <- loglm_model_loan_vs_Total_Income$df
+lrt_Total_Income <- loglm_model_loan_vs_Total_Income$lrt
+pearson_value_Total_Income <- loglm_model_loan_vs_Total_Income$pearson
+
+
+p_value_Total_Income <- 1 - pchisq(lrt_Total_Income, df = df_Total_Income)
+print("Statistics:")
+result_p_Total_Income <- data.frame(
+  Test = c("Likelihood Ratio Test", "Pearson Test"),
+  P_Value = c(p_value_Total_Income, pearson_value_Total_Income)
+)
+print(result_p_Total_Income)
+
+
+
+
+
+
+
+
+
+```
+The log-linear model examining the relationship between Loan Amount and Total Income a p-value of 1.00 suggests that the test did not find evidence to reject the null hypothesis, indicating a lack of significance  It is important to recognize that the continuous traits of the variables make Pearson's chi-square inapplicable in this scenario. 
+
+<br><br><br>
+
+
+```{r r_9}
+
+contingency_table_loan_vs_Self_Employed <- table(loandata$LoanAmount, loandata$Self_Employed)
+
+loglm_model_loan_vs_Self_Employed <- loglm(Freq ~ ., data = as.data.frame(contingency_table_loan_vs_Self_Employed))
+
+df_Total_Self_Employed <- loglm_model_loan_vs_Self_Employed$df
+lrt_Total_Self_Employed <- loglm_model_loan_vs_Self_Employed$lrt
+pearson_value_Self_Employed <- loglm_model_loan_vs_Self_Employed$pearson
+
+
+
+p_value_Total_Self_Employed <- 1 - pchisq(lrt_Total_Self_Employed, df = df_Total_Self_Employed)
+print("Statistics:")
+result_p_Total_Self_Employed <- data.frame(
+  Test = c("Likelihood Ratio Test", "Pearson Test"),
+  P_Value = c(p_value_Total_Self_Employed, pearson_value_Self_Employed)
+)
+print(result_p_Total_Self_Employed)
+
+
+
+
+
+```
+The likelihood between Loan Amount and Self_Employed yields a p-value of 0.7687, indicating that there is no significant association between these two variables. Therefore, based on this test, Self_Employed status does not have a strong significant impact on Loan Amount in the dataset.
+<br><br><br>
+
+
+```{r r_10}
+
+contingency_table_loan_vs_Gender <- table(loandata$LoanAmount, loandata$Gender)
+
+loglm_model_loan_vs_Gender <- loglm(Freq ~ ., data = as.data.frame(contingency_table_loan_vs_Gender))
+
+df_gender <- loglm_model_loan_vs_Gender$df
+lrt_gender <- loglm_model_loan_vs_Gender$lrt
+pearson_gender <- loglm_model_loan_vs_Gender$pearson
+
+
+
+p_value_gender <- 1 - pchisq(lrt_gender, df = df_gender)
+print("Statistics:")
+result_p_value_gender <- data.frame(
+  Test = c("Likelihood Ratio Test", "Pearson Test"),
+  P_Value = c(p_value_gender, pearson_gender)
+)
+print(result_p_value_gender)
+```
+
+The likelihood between Loan Amount and Gender results in a p-value of 0.2801. This suggests that there is no statistically significant association between Gender and Loan Amount in the dataset. Therefore, based on this test, Gender does not have a significant impact on Loan Amount.
+
+<br><br><br>
+
+
+```{r r_11}
+
+contingency_table_loan_vs_Property_Area <- table(loandata$LoanAmount, loandata$Property_Area)
+
+loglm_model_loan_vs_Property_Area <- loglm(Freq ~ ., data = as.data.frame(contingency_table_loan_vs_Property_Area))
+
+
+df_Total_Property_Area <- loglm_model_loan_vs_Property_Area$df
+lrt_Total_Property_Area <- loglm_model_loan_vs_Property_Area$lrt
+pearson_value_Property_Area <- loglm_model_loan_vs_Property_Area$pearson
+
+
+
+p_value_Total_Property_Area <- 1 - pchisq(lrt_Total_Property_Area, df = df_Total_Property_Area)
+
+p_pearson_Total_Property_Area <- 1 - pchisq(pearson_value_Property_Area, df = df_Total_Property_Area)
+
+print("Statistics:")
+result_p_Total_Property_Area <- data.frame(
+  Test = c("Likelihood Ratio Test", "Pearson Test"),
+  P_Value = c(p_value_Total_Property_Area, p_pearson_Total_Property_Area)
+)
+print(result_p_Total_Property_Area)
+
+```
+The likelihood ratio between Loan Amount and Property Area results in a p-value of 0.0011, indicating a statistically significant association between these variables. This suggests that Property Area has a significant impact on Loan Amount in the dataset. However, the Pearson chi-square test does not show a significant association.
+
+<br><br><br>
+
+
+```{r r_12}
+
+contingency_table_loan_vs_Married <- table(loandata$LoanAmount, loandata$Married)
+
+loglm_model_loan_vs_Total_Married <- loglm(Freq ~ ., data = as.data.frame(contingency_table_loan_vs_Married))
+
+df_Total_Married <- loglm_model_loan_vs_Total_Married$df
+lrt_Total_Married <- loglm_model_loan_vs_Total_Married$lrt
+pearson_Total_Married <- loglm_model_loan_vs_Total_Married$pearson
+
+
+p_value_Total_Married <- 1 - pchisq(lrt_Total_Married, df = df_Total_Married)
+
+p_pearson_Total_Married <- 1 - pchisq(pearson_Total_Married, df = df_Total_Married)
+
+print("Statistics:")
+result_p_value_Total_Married <- data.frame(
+  Test = c("Likelihood Ratio Test", "Pearson Test"),
+  P_Value = c(p_value_Total_Married, p_pearson_Total_Married)
+)
+print(result_p_value_Total_Married)
+
+
+```
+The likelihood ratio between Loan Amount and Marital Status (Married) yields a p-value of 0.0045, indicating a statistically significant association between variables. This suggests that Marital Status has a significant impact on Loan Amount in the dataset. However, the Pearson chi-square test does not show a significant association again.
+
+
+
+<br><br><br>
+
+```{r table}
+
+library(dplyr)
+New_result_p_value_Total_Married <- result_p_value_Total_Married %>%
+  mutate(Variable = "Married Variables")
+
+New_result_p_Total_Property_Area <- result_p_Total_Property_Area %>%
+  mutate(Variable = "Property Area Variables")
+
+
+New_result_p_value_gender <- result_p_value_gender %>%
+  mutate(Variable = "Gender Variables")
+
+
+New_result_p_Total_Self_Employed <- result_p_Total_Self_Employed %>%
+  mutate(Variable = "Self Employes Variables")
+
+New_result_p_Total_Income <- result_p_Total_Income %>%
+  mutate(Variable = "Total Income Variables")
+
+
+combined_data <- bind_rows(
+  New_result_p_Total_Property_Area,
+  New_result_p_value_gender,
+  New_result_p_Total_Self_Employed,
+  New_result_p_Total_Income,
+  New_result_p_value_Total_Married
+)
+
+Summary_Table <- combined_data %>%
+  select(Variable, Test, P_Value) %>%
+  spread(Test, P_Value)
+
+
+Sorted_Summary_Table <- Summary_Table %>% arrange(`Likelihood Ratio Test`)
+print("List of Most Accuracy for  Linear Model (loglm)")
+print(Sorted_Summary_Table)
+
+```
+
+
+In summary, based on the likelihood ratio test, Property Area Variables and Married Variables appear to be more significant in the log-linear model compared to Gender, Self-Employment status, and Total Income Variables. The Pearson test provides additional information, and for some variables, it didn't yield valid p-values.
+
+
+
